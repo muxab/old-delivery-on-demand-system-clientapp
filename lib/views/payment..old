@@ -1,0 +1,90 @@
+ return WillPopScope(
+      onWillPop: () async {
+        controller.back(Get.currentRoute);
+        return true;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              color: Colors.indigo,
+            ),
+            onPressed: () {
+              controller.back(Get.currentRoute);
+            },
+          ),
+          backgroundColor: Colors.white,
+          shadowColor: Colors.white,
+        ),
+        floatingActionButton: ElevatedButton(
+          onPressed: () {
+            controller.send();
+          },
+          child: const Text('preowughaojhfdsjajdsfbsdfsnkb'),
+        ),
+        body: Obx(
+          () => SafeArea(
+            child: controller.sysError()
+                ? Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        const Text('حــدث خطــأ ما '),
+                        IconButton(
+                            onPressed: () {}, icon: const Icon(Icons.refresh)),
+                      ],
+                    ),
+                  )
+                : controller.loading.isTrue
+                    ? const LoadingWidget()
+                    : Column(
+                        children: [
+                          Text(
+                            'Payment For Shipment => ${controller.serial.toString()}',
+                          ),
+                          ///////////////////////
+                          ///
+                          const Divider(
+                            color: Colors.red,
+                          ),
+
+                          Container(
+                            height: 400,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black),
+                              color: Colors.grey,
+                            ),
+                            child: controller.imgPicked.isFalse
+                                ? const Center(
+                                    child: Icon(
+                                      Icons.image,
+                                    ),
+                                  )
+                                : Column(
+                                    children: [
+                                      Text(
+                                        controller.imgPath.toString(),
+                                        // controller.myImg!.path.toString(),
+                                      ),
+                                      Image.file(
+                                        File(
+                                          // controller.myImg!.path,
+                                          controller.imgPath(),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                          ),
+
+                          ElevatedButton(
+                            onPressed: () {
+                              controller.pickImage();
+                            },
+                            child: const Text('اخـــتر صورة الاشعار'),
+                          ),
+                        ],
+                      ),
+          ),
+        ),
+      ),
